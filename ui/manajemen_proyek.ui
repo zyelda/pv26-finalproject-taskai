@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ManajemenProyek</class>
+ <widget class="QWidget" name="ManajemenProyek">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="toolbar_layout">
+     <item>
+      <widget class="QPushButton" name="btn_tambah">
+       <property name="text">+ Tambah Proyek</property>
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="txt_search">
+       <property name="placeholderText">Cari proyek...</property>
+       <property name="clearButtonEnabled">true</property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmb_filter_status">
+       <item>
+        <property name="text">Semua Status</property>
+       </item>
+       <item>
+        <property name="text">Aktif</property>
+       </item>
+       <item>
+        <property name="text">Selesai</property>
+       </item>
+       <item>
+        <property name="text">Tunda</property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tbl_proyek">
+     <property name="selectionBehavior">SelectRows</property>
+     <property name="editTriggers">NoEditTriggers</property>
+     <property name="alternatingRowColors">true</property>
+     <property name="sortingEnabled">true</property>
+     <attribute name="horizontalHeaderStretchLastSection">true</attribute>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+</ui>
