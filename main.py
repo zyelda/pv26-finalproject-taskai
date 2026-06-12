@@ -1,4 +1,5 @@
 import sys
+import os
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 from database.db_manager import setup_database
 from ui.manajemen_proyek_page import ManajemenProyekPage
+from ui.laporan_kinerja_page import LaporanKinerjaPage
 
 
 class MainWindow(QMainWindow):
@@ -78,14 +80,12 @@ class MainWindow(QMainWindow):
 
         self.page_kanban = QWidget()
         QVBoxLayout(self.page_kanban).addWidget(
-            QLabel("Kanban Board"), alignment=Qt.AlignCenter
-        )
+        QLabel("Kanban Board"),
+        alignment=Qt.AlignCenter
+    )
         self.stacked_widget.addWidget(self.page_kanban)
 
-        self.page_laporan = QWidget()
-        QVBoxLayout(self.page_laporan).addWidget(
-            QLabel("Laporan Kinerja"), alignment=Qt.AlignCenter
-        )
+        self.page_laporan = LaporanKinerjaPage()
         self.stacked_widget.addWidget(self.page_laporan)
 
     def _setup_menu_bar(self) -> None:
@@ -119,9 +119,28 @@ class MainWindow(QMainWindow):
 
 
 def main():
+
     app = QApplication(sys.argv)
+
     window = MainWindow()
+
+    # Load style.qss
+    qss_path = os.path.join(
+        os.path.dirname(__file__),
+        "assets",
+        "style.qss"
+    )
+
+    if os.path.exists(qss_path):
+
+        with open(qss_path, "r") as file:
+
+            app.setStyleSheet(
+                file.read()
+            )
+
     window.show()
+
     sys.exit(app.exec())
 
 
