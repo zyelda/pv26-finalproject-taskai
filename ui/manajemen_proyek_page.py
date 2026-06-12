@@ -1,23 +1,23 @@
 import os
 from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
+    QWidget, 
+    QVBoxLayout, 
+    QHBoxLayout, 
     QFormLayout,
-    QTableWidget,
-    QTableWidgetItem,
+    QTableWidget, 
+    QTableWidgetItem, 
     QHeaderView,
-    QPushButton,
-    QLineEdit,
-    QComboBox,
+    QPushButton, 
+    QLineEdit, 
+    QComboBox, 
     QDateEdit,
-    QDialog,
+    QDialog, 
     QMessageBox,
 )
 from PySide6.QtCore import Qt, QDate
 from PySide6.QtUiTools import QUiLoader
 from models.proyek_model import ProyekModel
-from PySide6.QtGui import QIcon
+from assets import icon
 
 
 class ProyekDialog(QDialog):
@@ -105,9 +105,7 @@ class ManajemenProyekPage(QWidget):
         self.txt_search: QLineEdit = self.ui.findChild(QLineEdit, "txt_search")
         self.cmb_filter: QComboBox = self.ui.findChild(QComboBox, "cmb_filter_status")
         self.btn_tambah: QPushButton = self.ui.findChild(QPushButton, "btn_tambah")
-        self.btn_tambah.setIcon(
-            QIcon("assets/icons/add.png")
-        )
+        self.btn_tambah.setIcon(icon("add.png"))
 
         self._setup_table()
         self._connect_signals()
@@ -150,15 +148,8 @@ class ManajemenProyekPage(QWidget):
         layout.setContentsMargins(4, 2, 4, 2)
         layout.setSpacing(6)
 
-        btn_edit = QPushButton(
-            QIcon("assets/icons/edit.png"),
-            "Edit"
-        )
-
-        btn_hapus = QPushButton(
-            QIcon("assets/icons/delete.png"),
-            "Hapus"
-        )
+        btn_edit = QPushButton(icon("edit.png"), "Edit")
+        btn_hapus = QPushButton(icon("delete.png"), "Hapus")
         btn_edit.setFixedWidth(80)
         btn_hapus.setFixedWidth(80)
 
@@ -180,7 +171,6 @@ class ManajemenProyekPage(QWidget):
         id_item = self.tbl.item(row, self.KOLOM_ID)
         if not id_item:
             return
-
         proyek_data = {
             "id": int(id_item.text()),
             "nama_proyek": self.tbl.item(row, self.KOLOM_NAMA).text(),
@@ -188,16 +178,12 @@ class ManajemenProyekPage(QWidget):
             "deadline": self.tbl.item(row, self.KOLOM_DEADLINE).text(),
             "status": self.tbl.item(row, self.KOLOM_STATUS).text(),
         }
-
         dialog = ProyekDialog(self, proyek_data)
         if dialog.exec() == QDialog.Accepted:
             data = dialog.get_data()
             ProyekModel.update_proyek(
-                proyek_data["id"],
-                data["nama_proyek"],
-                data["klien"],
-                data["deadline"],
-                data["status"],
+                proyek_data["id"], data["nama_proyek"], data["klien"],
+                data["deadline"], data["status"],
             )
             self.load_data()
 
@@ -205,14 +191,11 @@ class ManajemenProyekPage(QWidget):
         id_item = self.tbl.item(row, self.KOLOM_ID)
         if not id_item:
             return
-
         nama = self.tbl.item(row, self.KOLOM_NAMA).text()
         reply = QMessageBox.question(
-            self,
-            "Konfirmasi Hapus",
+            self, "Konfirmasi Hapus",
             f"Apakah Anda yakin ingin menghapus proyek '{nama}'?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
+            QMessageBox.Yes | QMessageBox.No, QMessageBox.No,
         )
         if reply == QMessageBox.Yes:
             ProyekModel.delete_proyek(int(id_item.text()))
@@ -221,13 +204,10 @@ class ManajemenProyekPage(QWidget):
     def _filter_table(self) -> None:
         search_text = self.txt_search.text().strip().lower()
         filter_status = self.cmb_filter.currentText()
-
         for row in range(self.tbl.rowCount()):
             nama = self.tbl.item(row, self.KOLOM_NAMA).text().lower()
             klien = self.tbl.item(row, self.KOLOM_KLIEN).text().lower()
             status = self.tbl.item(row, self.KOLOM_STATUS).text()
-
             match_search = not search_text or search_text in nama or search_text in klien
             match_filter = filter_status == "Semua Status" or status == filter_status
-
             self.tbl.setRowHidden(row, not (match_search and match_filter))
