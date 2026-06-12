@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QDate
 from PySide6.QtUiTools import QUiLoader
 from models.proyek_model import ProyekModel
+from PySide6.QtGui import QIcon
 
 
 class ProyekDialog(QDialog):
@@ -104,6 +105,9 @@ class ManajemenProyekPage(QWidget):
         self.txt_search: QLineEdit = self.ui.findChild(QLineEdit, "txt_search")
         self.cmb_filter: QComboBox = self.ui.findChild(QComboBox, "cmb_filter_status")
         self.btn_tambah: QPushButton = self.ui.findChild(QPushButton, "btn_tambah")
+        self.btn_tambah.setIcon(
+            QIcon("assets/icons/add.png")
+        )
 
         self._setup_table()
         self._connect_signals()
@@ -146,8 +150,15 @@ class ManajemenProyekPage(QWidget):
         layout.setContentsMargins(4, 2, 4, 2)
         layout.setSpacing(6)
 
-        btn_edit = QPushButton("Edit")
-        btn_hapus = QPushButton("Hapus")
+        btn_edit = QPushButton(
+            QIcon("assets/icons/edit.png"),
+            "Edit"
+        )
+
+        btn_hapus = QPushButton(
+            QIcon("assets/icons/delete.png"),
+            "Hapus"
+        )
         btn_edit.setFixedWidth(80)
         btn_hapus.setFixedWidth(80)
 

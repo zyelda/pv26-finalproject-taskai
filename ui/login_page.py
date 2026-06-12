@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
 )
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 
 
 class LoginPage(QWidget):
@@ -50,7 +51,12 @@ class LoginPage(QWidget):
         )
 
         self.btn_login = QPushButton(
+            QIcon("assets/icons/login.png"),
             "Login"
+        )
+
+        self.setWindowIcon(
+            QIcon("assets/icons/taskai.png")
         )
 
         layout.addWidget(

@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 
 from database.db_manager import get_connection
 from utils.data_exporter import DataExporter
+from PySide6.QtGui import QIcon
 
 
 class LaporanKinerjaPage(QWidget):
@@ -28,10 +29,12 @@ class LaporanKinerjaPage(QWidget):
         self.lbl_tugas_selesai = QLabel()
 
         self.btn_export_csv = QPushButton(
+            QIcon("assets/icons/csv.png"),
             "Export CSV"
         )
 
         self.btn_export_pdf = QPushButton(
+            QIcon("assets/icons/pdf.png"),
             "Export PDF"
         )
 

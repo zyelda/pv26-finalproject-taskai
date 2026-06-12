@@ -16,12 +16,18 @@ from PySide6.QtCore import Qt
 from database.db_manager import setup_database
 from ui.manajemen_proyek_page import ManajemenProyekPage
 from ui.laporan_kinerja_page import LaporanKinerjaPage
+from PySide6.QtGui import QIcon
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
         self.setWindowTitle("TaskAI")
+        self.setWindowIcon(
+            QIcon("assets/icons/taskai.png")
+        )
+
         self.resize(1200, 800)
 
         setup_database()
@@ -56,9 +62,20 @@ class MainWindow(QMainWindow):
         side_layout.setContentsMargins(0, 10, 0, 10)
         side_layout.setSpacing(0)
 
-        btn_manajemen = QPushButton("Manajemen Proyek")
-        btn_kanban = QPushButton("Kanban Board")
-        btn_laporan = QPushButton("Laporan Kinerja")
+        btn_manajemen = QPushButton(
+            QIcon("assets/icons/project.png"),
+            "Manajemen Proyek"
+        )
+
+        btn_kanban = QPushButton(
+            QIcon("assets/icons/board.png"),
+            "Kanban Board"
+        )
+
+        btn_laporan = QPushButton(
+            QIcon("assets/icons/report.png"),
+            "Laporan Kinerja"
+        )
 
         btn_manajemen.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(0))
         btn_kanban.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(1))
