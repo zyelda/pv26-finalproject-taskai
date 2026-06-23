@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>KanbanBoardWidget</class>
+ <widget class="QWidget" name="KanbanBoardWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Kanban Board</string>
+  </property>
+
+  <!-- Root layout vertikal -->
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+   <property name="spacing"><number>12</number></property>
+   <property name="leftMargin"><number>16</number></property>
+   <property name="topMargin"><number>16</number></property>
+   <property name="rightMargin"><number>16</number></property>
+   <property name="bottomMargin"><number>16</number></property>
+
+   <!-- ── Judul halaman ── -->
+   <item>
+    <widget class="QLabel" name="lbl_judul">
+     <property name="text"><string>📋 Kanban Board</string></property>
+     <property name="font">
+      <font><family>Segoe UI</family><pointsize>16</pointsize><weight>75</weight><bold>true</bold></font>
+     </property>
+    </widget>
+   </item>
+
+   <!-- ── Toolbar ── -->
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_toolbar">
+     <property name="spacing"><number>8</number></property>
+
+     <!-- Label Proyek -->
+     <item>
+      <widget class="QLabel" name="lbl_proyek">
+       <property name="text"><string>Proyek:</string></property>
+      </widget>
+     </item>
+
+     <!-- Filter Proyek -->
+     <item>
+      <widget class="QComboBox" name="cmb_filter_proyek">
+       <property name="minimumWidth"><number>180</number></property>
+       <property name="maximumWidth"><number>180</number></property>
+       <item><property name="text"><string>Semua Proyek</string></property></item>
+      </widget>
+     </item>
+
+     <!-- Search bar -->
+     <item>
+      <widget class="QLineEdit" name="txt_search_tugas">
+       <property name="placeholderText"><string>🔍 Cari tugas...</string></property>
+       <property name="minimumWidth"><number>200</number></property>
+       <property name="maximumWidth"><number>200</number></property>
+      </widget>
+     </item>
+
+     <!-- Filter Prioritas -->
+     <item>
+      <widget class="QComboBox" name="cmb_filter_prioritas">
+       <property name="minimumWidth"><number>150</number></property>
+       <property name="maximumWidth"><number>150</number></property>
+       <item><property name="text"><string>Semua Prioritas</string></property></item>
+       <item><property name="text"><string>Tinggi</string></property></item>
+       <item><property name="text"><string>Sedang</string></property></item>
+       <item><property name="text"><string>Rendah</string></property></item>
+      </widget>
+     </item>
+
+     <!-- Filter Status -->
+     <item>
+      <widget class="QComboBox" name="cmb_filter_status">
+       <property name="minimumWidth"><number>150</number></property>
+       <property name="maximumWidth"><number>150</number></property>
+       <item><property name="text"><string>Semua Status</string></property></item>
+       <item><property name="text"><string>Todo</string></property></item>
+       <item><property name="text"><string>In Progress</string></property></item>
+       <item><property name="text"><string>Done</string></property></item>
+      </widget>
+     </item>
+
+     <!-- Spacer -->
+     <item>
+      <spacer name="spacer_toolbar">
+       <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+      </spacer>
+     </item>
+
+     <!-- Tombol Tambah Tugas -->
+     <item>
+      <widget class="QPushButton" name="btn_tambah_tugas">
+       <property name="text"><string>+ Tambah Tugas</string></property>
+       <property name="minimumHeight"><number>36</number></property>
+       <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+       <property name="font">
+        <font><pointsize>10</pointsize><weight>75</weight><bold>true</bold></font>
+       </property>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+   <!-- ── Board: 3 kolom Kanban ── -->
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_board">
+     <property name="spacing"><number>12</number></property>
+
+     <!-- Kolom Todo -->
+     <item>
+      <widget class="QFrame" name="frame_todo">
+       <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+       <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+       <layout class="QVBoxLayout" name="vl_todo">
+        <property name="spacing"><number>6</number></property>
+        <property name="leftMargin"><number>8</number></property>
+        <property name="topMargin"><number>8</number></property>
+        <property name="rightMargin"><number>8</number></property>
+        <property name="bottomMargin"><number>8</number></property>
+
+        <!-- Header Todo -->
+        <item>
+         <widget class="QLabel" name="lbl_header_todo">
+          <property name="text"><string>Todo</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="minimumHeight"><number>34</number></property>
+          <property name="font">
+           <font><pointsize>10</pointsize><weight>75</weight><bold>true</bold></font>
+          </property>
+         </widget>
+        </item>
+
+        <!-- Counter Todo -->
+        <item>
+         <widget class="QLabel" name="lbl_count_todo">
+          <property name="text"><string>0 tugas</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+         </widget>
+        </item>
+
+        <!-- Scroll area untuk kartu Todo -->
+        <item>
+         <widget class="QScrollArea" name="scroll_todo">
+          <property name="widgetResizable"><bool>true</bool></property>
+          <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+          <widget class="QWidget" name="scroll_content_todo">
+           <layout class="QVBoxLayout" name="vl_todo_cards">
+            <property name="alignment"><flag>Qt::AlignTop</flag></property>
+            <property name="spacing"><number>4</number></property>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+
+       </layout>
+      </widget>
+     </item>
+
+     <!-- Kolom In Progress -->
+     <item>
+      <widget class="QFrame" name="frame_inprogress">
+       <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+       <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+       <layout class="QVBoxLayout" name="vl_inprogress">
+        <property name="spacing"><number>6</number></property>
+        <property name="leftMargin"><number>8</number></property>
+        <property name="topMargin"><number>8</number></property>
+        <property name="rightMargin"><number>8</number></property>
+        <property name="bottomMargin"><number>8</number></property>
+
+        <!-- Header In Progress -->
+        <item>
+         <widget class="QLabel" name="lbl_header_inprogress">
+          <property name="text"><string>In Progress</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="minimumHeight"><number>34</number></property>
+          <property name="font">
+           <font><pointsize>10</pointsize><weight>75</weight><bold>true</bold></font>
+          </property>
+         </widget>
+        </item>
+
+        <!-- Counter In Progress -->
+        <item>
+         <widget class="QLabel" name="lbl_count_inprogress">
+          <property name="text"><string>0 tugas</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+         </widget>
+        </item>
+
+        <!-- Scroll area untuk kartu In Progress -->
+        <item>
+         <widget class="QScrollArea" name="scroll_inprogress">
+          <property name="widgetResizable"><bool>true</bool></property>
+          <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+          <widget class="QWidget" name="scroll_content_inprogress">
+           <layout class="QVBoxLayout" name="vl_inprogress_cards">
+            <property name="alignment"><flag>Qt::AlignTop</flag></property>
+            <property name="spacing"><number>4</number></property>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+
+       </layout>
+      </widget>
+     </item>
+
+     <!-- Kolom Done -->
+     <item>
+      <widget class="QFrame" name="frame_done">
+       <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+       <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+       <layout class="QVBoxLayout" name="vl_done">
+        <property name="spacing"><number>6</number></property>
+        <property name="leftMargin"><number>8</number></property>
+        <property name="topMargin"><number>8</number></property>
+        <property name="rightMargin"><number>8</number></property>
+        <property name="bottomMargin"><number>8</number></property>
+
+        <!-- Header Done -->
+        <item>
+         <widget class="QLabel" name="lbl_header_done">
+          <property name="text"><string>Done</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="minimumHeight"><number>34</number></property>
+          <property name="font">
+           <font><pointsize>10</pointsize><weight>75</weight><bold>true</bold></font>
+          </property>
+         </widget>
+        </item>
+
+        <!-- Counter Done -->
+        <item>
+         <widget class="QLabel" name="lbl_count_done">
+          <property name="text"><string>0 tugas</string></property>
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+         </widget>
+        </item>
+
+        <!-- Scroll area untuk kartu Done -->
+        <item>
+         <widget class="QScrollArea" name="scroll_done">
+          <property name="widgetResizable"><bool>true</bool></property>
+          <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+          <widget class="QWidget" name="scroll_content_done">
+           <layout class="QVBoxLayout" name="vl_done_cards">
+            <property name="alignment"><flag>Qt::AlignTop</flag></property>
+            <property name="spacing"><number>4</number></property>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+
+       </layout>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>

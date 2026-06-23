@@ -438,7 +438,7 @@ class KanbanBoardPage(QWidget):
         """Muat daftar proyek ke filter combobox."""
         try:
             from models.proyek_model import ProyekModel
-            self._proyek_list = ProyekModel.get_all()
+            self._proyek_list = ProyekModel.get_all_proyek()
         except Exception:
             self._proyek_list = []
 
@@ -488,7 +488,7 @@ class KanbanBoardPage(QWidget):
 
     # ── Refresh board ──────────────────────────────────────────────────────
     def refresh(self):
-        """Ambil ulang data dari DB, terapkan filter, dan render kartu."""
+        """Ambil ulang data, terapkan filter (DB-level) + search (in-memory), lalu render kartu."""
         keyword   = self.txt_search_tugas.text().strip()
         proyek_id = self.cmb_filter_proyek.currentData()
         prioritas = self.cmb_filter_prioritas.currentText()
@@ -497,24 +497,30 @@ class KanbanBoardPage(QWidget):
         prioritas = None if prioritas == "Semua Prioritas" else prioritas
         status    = None if status    == "Semua Status"    else status
 
-        # Ambil data
-        if keyword:
-            rows = TugasModel.search_tugas(keyword)
-        else:
-            rows = TugasModel.filter_tugas(
-                proyek_id=proyek_id,
-                prioritas=prioritas,
-                status=status
-            )
+        # ✅ Selalu filter dulu di level database (proyek, prioritas, status)
+        rows = TugasModel.filter_tugas(
+            proyek_id=proyek_id,
+            prioritas=prioritas,
+            status=status,
+        )
 
-        # Pisah per kolom
+        # ✅ Lalu saring lagi pakai keyword secara in-memory agar keduanya aktif bersamaan
+        if keyword:
+            kw = keyword.lower()
+            rows = [
+                r for r in rows
+                if kw in (r[2] or "").lower()   # nama_tugas
+                or kw in (r[3] or "").lower()   # deskripsi
+            ]
+
+        # Pisah per kolom status
         buckets = {"Todo": [], "In Progress": [], "Done": []}
         for row in rows:
             s = row[5] if len(row) > 5 else "Todo"
             if s in buckets:
                 buckets[s].append(row)
 
-        # Render
+        # Render kartu ke masing-masing kolom
         for kolom, status_key in [
             (self.kolom_todo,  "Todo"),
             (self.kolom_prog,  "In Progress"),
