@@ -101,7 +101,7 @@ class LaporanKinerjaPage(QWidget):
         root.addLayout(cards_row)
         root.addSpacing(28)
 
-        # ── Progress bar ────────────────────────────────────────────
+        # ── Progress bar ──────────────────────────────────────────
         self.frame_progress = QFrame()
         self.frame_progress.setObjectName("stat_card")
         prog_layout = QVBoxLayout(self.frame_progress)
@@ -223,6 +223,7 @@ class LaporanKinerjaPage(QWidget):
             QMessageBox.information(self, "Berhasil", f"File CSV berhasil disimpan:\n{file_path}")
         except Exception as e:
             QMessageBox.critical(self, "Gagal", f"Gagal mengekspor CSV:\n{e}")
+
 
     def _export_pdf(self):
         file_path, _ = QFileDialog.getSaveFileName(
